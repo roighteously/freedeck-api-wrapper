@@ -5,10 +5,24 @@ module.exports = () => {
 	const companion = io("ws://localhost:5754");
 	companion.isCompanion = true;
 
+	companion.logQueue = [];
+
 	companion.on('connect', () => {
 		companion.emit('c-connected');
 		// Why does that bypass auth?? Quite dangerous
 		log("Companion logged in", companion);
+
+		setInterval(() => {
+			companion.logQueue.forEach(obj => {
+				companion.emit('c2s_log', `[Companion/${obj.sender}] ${obj.data}`);
+				log(`Sent log [Companion/${obj.sender}] ${obj.data}`, companion);
+				companion.logQueue.shift();
+			})
+		},20);
+	});
+
+	companion.on('server_shutdown', () => {
+		log('Server shutting down');
 	});
 
 	companion.sendReset = () => {
@@ -27,8 +41,7 @@ module.exports = () => {
 	};
 
 	companion.log = (sender, data) => {
-		companion.emit('c2s_log', `[Companion/${sender}] ${data}`);
-		log(`[${sender}: ${data}] logged`, companion);
+		companion.logQueue.push({sender, data})
 	}
 
 	return companion;
