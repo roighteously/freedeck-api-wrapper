@@ -4,9 +4,9 @@ const socket = io("ws://localhost:5754");
 const config = require('../config.json');
 const { log } = require('./globalUtil');
 const auth = require('./auth');
-const companion = require('./companion');
+const companionInit = require('./companion');
 
-socket.on('connect', (dat) => {
+socket.on('connect', () => {
 	log("Connected to Freedeck");
 })
 socket.on("session_valid", () => { 
@@ -17,7 +17,8 @@ socket.on("session_invalid", () => {
 });
 
 // Init companion client
-companion();
+const companion = companionInit();
+companion.log("Sender", "Data");
 
 // Init auth stuff
 auth(config.loginID, config.passwd, socket);
