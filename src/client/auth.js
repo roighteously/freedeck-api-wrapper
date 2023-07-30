@@ -17,6 +17,10 @@ module.exports = (loginID, passwd, socket) => {
 			log('Retrying..');
 			socket.emit("c2sr_login", loginID);
 			socket.loginTries++;
+			if (socket.loginTries === 50) {
+				log('50 try limit exceeded. Exiting.');
+				process.exit(0)
+			}
 		} else {
 			log("Password protected server; using configured password");
 			socket.emit('c2sd_login', passwd);

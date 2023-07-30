@@ -36,6 +36,14 @@ module.exports = () => {
 		companion.emit('c-reset');
 	};
 
+	companion.remoteReload = () => {
+		companion.emit('c-change');
+	}
+
+	companion.sendThemeData = (themeData) => {
+		companion.emit('c-send-theme', themeData);
+	}
+
 	companion.themes = {
 		DEFAULT: "Default",
 		FUN: "Fun",
