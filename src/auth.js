@@ -1,4 +1,4 @@
-module.exports = (loginID, passwd) => {
+module.exports = (loginID, passwd, socket) => {
 	// We'll need to authenticate w/ FD.
 	socket.emit("c2sr_login", loginID);
 
