@@ -1,4 +1,6 @@
 {
 	"loginID": "FDAPI",
-	"passwd": "Freedeck!123"
+	"passwd": "Freedeck!123",
+	
+	"log": true
 }
