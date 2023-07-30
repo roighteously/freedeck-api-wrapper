@@ -30,6 +30,10 @@ module.exports = (loginID, passwd, socket) => {
 	})
 
 	socket.on('s2ca_incorrect_pass', () => {
+		if (socket.loginTries === 50) {
+			log('50 try limit exceeded. Exiting.');
+			process.exit(0)
+		}
 		log('Incorrect password, retrying. [Tries: ' + socket.loginTries + ' ]');
 		socket.emit('c2sd_login', passwd);
 		socket.loginTries++;
